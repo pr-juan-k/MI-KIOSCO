@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MI KIOKO - Administrador</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/productos.css">
+    <link rel="stylesheet" href="css/addStock.css">
+    <link rel="stylesheet" href="css/ganancias.css">
+
+
+
+</head>
+<body>
+    <div class="dashboard-container admin-theme">
+        <!-- Sidebar -->
+        <aside class="sidebar sidebar-admin">
+            <div class="login-header">
+    <div class="logo-icon">🏪</div>
+    <h1>MI KIOSCO</h1>
+    <span class="admin-badge">ADMIN</span>
+</div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active" data-section="inicio">
+                        <a href="#" onclick="mostrarSeccionAdmin('inicio'); return false;"><span class="nav-icon">&#127968;</span> Inicio</a>
+                    </li>
+                    <li data-section="cargar-producto">
+                        <a href="#" onclick="mostrarSeccionAdmin('cargar-producto'); return false;"><span class="nav-icon">&#10133;</span> Cargar Producto</a>
+                    </li>
+                    <li data-section="edit-productos"> 
+                        <a href="#" onclick="mostrarSeccionAdmin('edit-productos'); return false;">
+                            <span class="nav-icon">&#9999;</span> Editar Productos
+                        </a>
+                    </li>
+                    <li data-section="agregar-stock">
+                        <a href="#" onclick="mostrarSeccionAdmin('agregar-stock'); return false;">
+                            <span class="nav-icon">&#128230;</span> Agregar Stock
+                        </a>
+                    </li>
+                   
+                     <li data-section="ganancias">
+                        <a href="#" onclick="mostrarSeccionAdmin('ganancias'); return false;">
+                            <span class="nav-icon">&#128202;</span> Ganancias
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="cerrarSesionAdmin()">
+                    <span>&#128682;</span> Cerrar Sesion
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header admin-header">
+                <h1 id="tituloSeccion">Panel de Administracion</h1>
+                <div class="user-info">
+                    <span class="user-avatar admin-avatar">&#128081;</span>
+                    <span id="nombreUsuario">Administrador</span>
+                </div>
+            </header>
+
+            <!-- ========== SECCION INICIO ========== -->
+            <div id="seccionAdminInicio" class="seccion-admin-content">
+                <section class="welcome-section">
+                    <div class="welcome-card admin-welcome">
+                        <h2>Bienvenido Admin!</h2>
+                        <p>Tienes acceso completo al sistema de gestion.</p>
+                        <p class="welcome-date" id="fechaActual"></p>
+                    </div>
+                </section>
+               
+ 
+
+
+                <!-- Botones principales MAIN -->
+                <section class="admin-acciones-grid">
+                    <button class="admin-accion-card" onclick="mostrarSeccionAdmin('cargar-producto')">
+                        <div class="accion-icono accion-verde">&#10133;</div>
+                        <h3>Cargar Producto</h3>
+                        <p>Agregar nuevos productos al catalogo</p>
+                    </button>
+                    <button class="admin-accion-card" onclick="mostrarSeccionAdmin('reportes')">
+                        <div class="accion-icono accion-azul">&#128202;</div>
+                        <h3>Reportes</h3>
+                        <p>Ver reportes de ventas y estadisticas</p>
+                    </button>
+                    <button class="admin-accion-card" onclick="mostrarSeccionAdmin('inventario')">
+                        <div class="accion-icono accion-naranja">&#128230;</div>
+                        <h3>Inventario</h3>
+                        <p>Gestionar stock y productos</p>
+                    </button>
+                    <button class="admin-accion-card" onclick="mostrarSeccionAdmin('empleados')">
+                        <div class="accion-icono accion-violeta">&#128101;</div>
+                        <h3>Empleados</h3>
+                        <p>Administrar personal y turnos</p>
+                    </button>
+                    <button class="admin-accion-card" onclick="mostrarSeccionAdmin('configuracion')">
+                        <div class="accion-icono accion-gris">&#9881;</div>
+                        <h3>Configuracion</h3>
+                        <p>Ajustes generales del sistema</p>
+                    </button>
+                </section>
+
+                <section class="stats-section">
+                    <div class="stat-card">
+                        <div class="stat-icon">&#128176;</div>
+                        <div class="stat-info">
+                            <h3>Ventas Totales</h3>
+                            <p class="stat-value" id="statVentas">$0.00</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">&#128230;</div>
+                        <div class="stat-info">
+                            <h3>Productos</h3>
+                            <p class="stat-value" id="statProductos">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">&#128101;</div>
+                        <div class="stat-info">
+                            <h3>Empleados</h3>
+                            <p class="stat-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">&#9888;</div>
+                        <div class="stat-info">
+                            <h3>Stock Bajo</h3>
+                            <p class="stat-value" id="statStockBajo">0</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+                <!-- ========== SECCION mostrar productos ========== -->
+            <div id="agregar-stock" class="seccion-admin-content" style="display:none;">
+    
+    <div class="header-section">
+        <h1>Control de Stock</h1>
+        <p>Selecciona una categoría o busca un producto para sumar unidades.</p>
+    </div>
+
+    <div class="search-global-container">
+        <div class="search-box">
+            <span class="search-icon">&#128269;</span>
+            <input type="text" id="inputBusquedaGlobalStock" placeholder="Buscar producto para agregar stock..." onkeyup="manejarBusquedaStockGlobal()">
+        </div>
+        <div id="resultadosGlobalesStock" class="global-results-grid"></div>
+    </div>
+
+    <hr class="divider">
+
+    <div id="contenedorNavegacionStock">
+        
+        <div id="breadcrumbStock" class="breadcrumb" style="display:none;">
+            <span onclick="resetearVistaStock()">Categorías</span> 
+            <span id="breadcrumb-separator-stock" style="display:none;"> > </span>
+            <span id="breadcrumb-cat-stock" class="active"></span>
+        </div>
+
+        <div class="scroll-container">
+            <div id="gridCategoriasStock" class="category-row">
+                </div>
+        </div>
+
+        <div id="gridSubcategoriasStock" class="category-grid" style="display:none;">
+            </div>
+
+        <div id="panelTablaStock" style="display:none;">
+            
+            <div class="table-header-controls">
+                <h3 id="tituloTablaStock">Inventario</h3>
+                <input type="text" id="inputBusquedaTablaStock" class="input-sm" placeholder="Filtrar..." onkeyup="filtrarTablaStock()">
+            </div>
+
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Marca</th>
+                            <th>Stock Actual</th>
+                            <th>Agregar</th> <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyProductosStock">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+               <!-- ========== SECCION mostrar productos ========== -->
+                    <div id="edit-productos" class="seccion-admin-content" style="display:none;">
+                        
+                        <div class="header-section">
+                            <h1>Catálogo de Productos</h1>
+                            <p>Gestiona y visualiza el inventario del drugstore</p>
+                        </div>
+
+                        <div class="search-global-container">
+                            <div class="search-box">
+                                <span class="search-icon">&#128269;</span>
+                                <input type="text" id="inputBusquedaGlobal" placeholder="Buscar por Código, Nombre o Marca..." onkeyup="manejarBusquedaGlobal()">
+                            </div>
+                            <div id="resultadosGlobales" class="global-results-grid"></div>
+                        </div>
+
+                        <hr class="divider">
+
+                        <div id="contenedorNavegacion">
+                            
+                            <div id="breadcrumb" class="breadcrumb" style="display:none;">
+                                <span onclick="resetearVistaCategorias()">Categorías</span> 
+                                <span id="breadcrumb-separator" style="display:none;"> > </span>
+                                <span id="breadcrumb-cat" class="active"></span>
+                            </div>
+
+                            <div id="gridCategorias" class="category-grid">
+                                </div>
+
+                            <div id="gridSubcategorias" class="category-grid" style="display:none;">
+                                </div>
+
+                            <div id="panelTablaProductos" style="display:none;">
+                                
+                                <div class="table-header-controls">
+                                    <h3 id="tituloTablaProductos">Productos</h3>
+                                    <input type="text" id="inputBusquedaTabla" class="input-sm" placeholder="Filtrar en esta lista..." onkeyup="filtrarTablaActual()">
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="admin-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Código</th>
+                                                <th>Marca</th>
+                                                <th>Nombre</th>
+                                                <th>Categoría</th>
+                                                <th>Subcat.</th>
+                                                <th>Precio</th>
+                                                <th>Stock</th>
+                                                <th>Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbodyProductos">
+                                            </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+            <!-- ========== SECCION CARGAR PRODUCTO ========== -->
+            <div id="seccionCargarProducto" class="seccion-admin-content" style="display: none;">
+                <div class="form-cargar-producto">
+                    <div class="form-cp-header">
+                        <h2>Cargar Nuevo Producto</h2>
+                        <p>Complete los campos para agregar un producto al catalogo</p>
+                    </div>
+
+                    <form id="formCargarProducto" onsubmit="guardarProducto(event)">
+                        <div class="form-cp-grid">
+                            <!-- Codigo -->
+                            <div class="form-cp-group">
+                                <label for="cpCodigo">Codigo *</label>
+                                <input type="text" id="cpCodigo" placeholder="Ej: BEB001, MED012, GAL005" required>
+                            </div>
+
+                            <!-- Producto -->
+                            <div class="form-cp-group">
+                                <label for="cpProducto">Producto *</label>
+                                <input type="text" id="cpProducto" placeholder="Ej: Mochila, Gaseosa, Yogurt, Perfume" required>
+                            </div>
+
+                            <!-- Marca -->
+                            <div class="form-cp-group">
+                                <label for="cpMarca">Marca *</label>
+                                <input type="text" id="cpMarca" placeholder="Ej: Coca Cola, Don Satur, Amodil" required>
+                            </div>
+
+                            <!-- Precio de venta -->
+                            <div class="form-cp-group">
+                                <label for="cpPrecio">Precio de Venta *</label>
+                                <input type="number" id="cpPrecio" placeholder="Ej: 1500" min="0" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <!-- Descripcion -->
+                        <div class="form-cp-group form-cp-full">
+                            <label for="cpDescripcion">Descripcion (opcional)</label>
+                            <textarea id="cpDescripcion" rows="3" placeholder="Detalle mas informacion sobre el producto: Promos por unidad, descuentos, forma de venta..."></textarea>
+                        </div>
+
+                        <!-- Categoria -->
+                        <div class="form-cp-grid">
+                            <div class="form-cp-group">
+                                <label for="cpCategoria">Categoria *</label>
+                                <select id="cpCategoria" onchange="verificarSubcategoria()" required>
+                                    <option value="">-- Seleccionar categoria --</option>
+                                    <option value="Regaleria">1. Regaleria</option>
+                                    <option value="Farmacia">2. Farmacia</option>
+                                    <option value="Panaderia">3. Panaderia</option>
+                                    <option value="Bazares">4. Bazares</option>
+                                    <option value="Jugueteria">5. Jugueteria</option>
+                                    <option value="Indumentaria">6. Indumentaria</option>
+                                    <option value="Golosinas">7. Golosinas</option>
+                                    <option value="Gas Envasado">8. Gas Envasado</option>
+                                    <option value="Bebidas">9. Bebidas</option>
+                                    <option value="Cotillon de Fiesta">10. Cotillon de Fiesta</option>
+                                    <option value="Forrajeria">11. Forrajeria</option>
+                                    <option value="Embutidos">12. Embutidos</option>
+                                    <option value="Lacteos">13. Lacteos</option>
+                                    <option value="Ropa Intima">14. Ropa Intima</option>
+                                    <option value="Merseria">15. Merseria</option>
+                                    <option value="Escolar">16. Escolar</option>
+                                    <option value="Almacen">17. Almacen</option>
+                                    <option value="Cigarrillo">18. Cigarrillo</option>
+                                </select>
+                            </div>
+
+                            <!-- Subcategoria (dinamica) -->
+                            <div class="form-cp-group" id="contenedorSubcategoria" style="display: none;">
+                                <label for="cpSubcategoria">Subcategoria *</label>
+                                <select id="cpSubcategoria">
+                                    <option value="">-- Seleccionar --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Stock -->
+                        <div class="form-cp-stock-section">
+                            <div class="form-cp-checkbox">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" id="cpHabilitarStock" onchange="toggleStockFields()">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Habilitar Stock</span>
+                                </label>
+                            </div>
+
+                            <div id="camposStock" class="form-cp-stock-fields" style="display: none;">
+                                <div class="form-cp-group">
+                                    <label for="cpStockLocal">Stock en Local</label>
+                                    <input type="number" id="cpStockLocal" placeholder="Cantidad disponible" min="0">
+                                    <span class="campo-ayuda">Cantidad actual en la tienda</span>
+                                </div>
+                                <div class="form-cp-group">
+                                    <label for="cpStockBajo">Stock Bajo (alerta)</label>
+                                    <input type="number" id="cpStockBajo" placeholder="Ej: 20" min="0">
+                                    <span class="campo-ayuda">Se alertara cuando el stock baje de esta cantidad</span>
+                                </div>
+                                <div class="form-cp-group">
+                                    <label for="cpStockMuyBajo">Stock Muy Bajo (critico)</label>
+                                    <input type="number" id="cpStockMuyBajo" placeholder="Ej: 5" min="0">
+                                    <span class="campo-ayuda">Alerta critica cuando llegue a esta cantidad</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones de accion -->
+                        <div class="form-cp-actions">
+                            <button type="button" class="btn-cp-cancelar" onclick="limpiarFormularioProducto()">Limpiar Formulario</button>
+                            <button type="submit" class="btn-cp-guardar">
+                                <span>&#10003;</span> Guardar Producto
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Listado de productos cargados -->
+                    <div class="productos-cargados-section">
+                        <h3>Productos Cargados Recientemente</h3>
+                        <div id="listaProductosCargados" class="lista-productos-cargados">
+                            <div class="sin-productos-cargados">
+                                <p>No se han cargado productos en esta sesion</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== SECCION REPORTES (placeholder) ========== -->
+           <div id="seccionGanancias" class="seccion-admin-content" style="display: none;">
+    
+                <div class="header-section">
+                        <h1>Reporte de Ganancias</h1>
+                        <p>Control de ingresos diarios, semanales y mensuales.</p>
+                    </div>
+
+                    <div id="contenedor-meses-ganancias"></div>
+
+                </div>
+
+                <div id="modalDetalleDia" class="modal-overlay" style="display:none;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="modal-titulo-dia">Detalle del Día</h3>
+                            <button onclick="cerrarModalGanancias()" class="close-modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="detail-row">
+                                <span>💵 Efectivo:</span>
+                                <span id="modal-efectivo" class="money-positive">$0.00</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>🏦 Transferencia:</span>
+                                <span id="modal-transferencia" class="money-blue">$0.00</span>
+                            </div>
+                            <hr>
+                            <div class="detail-row total-row">
+                                <span>TOTAL:</span>
+                                <span id="modal-total">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+            
+            </div>
+
+            <!-- ========== SECCION INVENTARIO (placeholder) ========== -->
+           
+
+            <!-- ========== SECCION EMPLEADOS (placeholder) ========== -->
+           
+
+            <!-- ========== SECCION CONFIGURACION (placeholder) ========== -->
+            
+
+        </main>
+    </div>
+
+    <script src="js/productos.js"></script>
+    <script src="js/admin.js"></script>
+
+    <script src="js/tienda-productos.js"></script>
+    <script src="js/view-productos.js"></script>
+    <script src="js/add-stock-view.js"></script>
+    <script src="js/ganancias-view.js"></script>
+
+    
+
+</body>
+</html>

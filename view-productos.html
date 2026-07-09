@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MI DRUGSTORE - Administrador</title>
+    <link rel="stylesheet" href="css/productos.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="dashboard-container admin-theme">
+        <!-- Sidebar -->
+        <aside class="sidebar sidebar-admin">
+            <div class="sidebar-header">
+                <div class="logo-icon">&#128138;</div>
+                <h2>MI DRUGSTORE</h2>
+                <span class="admin-badge">ADMIN</span>
+            </div>
+            <nav class="sidebar-nav">hola. te muetro mi .html (view-productos.html
+                <ul>
+                    <li class="active" data-section="inicio">
+                        <a href="#" onclick="mostrarSeccionAdmin('inicio'); return false;"><span class="nav-icon">&#127968;</span> Inicio</a>
+                    </li>
+                    <li data-section="cargar-producto">
+                        <a href="#" onclick="mostrarSeccionAdmin('cargar-producto'); return false;"><span class="nav-icon">&#10133;</span> Cargar Producto</a>
+                    </li>
+                    <li data-section="cargar-producto">
+                        <a href="view-productos.html" onclick="mostrarSeccionAdmin('cargar-producto'); return false;"><span class="nav-icon">&#10133;</span> Ver Productos</a>
+                    </li>
+                    <li data-section="reportes">
+                        <a href="#" onclick="mostrarSeccionAdmin('reportes'); return false;"><span class="nav-icon">&#128202;</span> Reportes</a>
+                    </li>
+                    <li data-section="inventario">
+                        <a href="#" onclick="mostrarSeccionAdmin('inventario'); return false;"><span class="nav-icon">&#128230;</span> Inventario</a>
+                    </li>
+                    <li data-section="empleados">
+                        <a href="#" onclick="mostrarSeccionAdmin('empleados'); return false;"><span class="nav-icon">&#128101;</span> Empleados</a>
+                    </li>
+                    <li data-section="configuracion">
+                        <a href="#" onclick="mostrarSeccionAdmin('configuracion'); return false;"><span class="nav-icon">&#9881;</span> Configuracion</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="cerrarSesionAdmin()">
+                    <span>&#128682;</span> Cerrar Sesion
+                </button>
+            </div>
+        </aside>
+
+        
+    </div>
+
+    <script src="js/tienda-productos.js"></script>
+    
+</body>
+</html>

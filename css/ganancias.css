@@ -1,0 +1,126 @@
+/* css/ganancias.css */
+
+/* Botón del Mes (Acordeón) */
+.mes-accordion {
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.mes-header {
+    background: #f8fafc;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.mes-header:hover { background: #f1f5f9; }
+.mes-titulo { font-size: 18px; font-weight: 700; color: #1e293b; }
+.mes-total { font-size: 18px; font-weight: 700; color: #166534; }
+
+/* Contenido del Mes (Tabla) */
+.mes-content {
+    display: none; /* Oculto por defecto */
+    padding: 20px;
+    border-top: 1px solid #e2e8f0;
+    animation: fadeIn 0.3s ease;
+}
+
+.mes-content.open { display: block; }
+
+/* Tabla de Ganancias */
+.tabla-ganancias {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 4px; /* Espacio entre celdas */
+}
+
+.tabla-ganancias th {
+    padding: 10px;
+    color: #64748b;
+    font-size: 12px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.cell-day {
+    padding: 15px 5px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s;
+    position: relative;
+    border: 1px solid transparent;
+}
+
+.cell-day:hover { transform: scale(1.02); z-index: 10; border-color: #94a3b8; }
+
+.day-number { display: block; font-size: 10px; color: #666; margin-bottom: 4px; }
+.day-amount { display: block; font-weight: 700; font-size: 14px; }
+
+/* --- COLORES DE ESTADO --- */
+
+/* 1. Pasado (Verde) */
+.status-green {
+    background-color: #dcfce7; /* Fondo verde claro */
+    color: #14532d;            /* Texto verde oscuro */
+}
+
+/* 2. Hoy (Naranja) */
+.status-orange {
+    background-color: #ffedd5; /* Fondo naranja claro */
+    color: #7c2d12;            /* Texto naranja oscuro */
+    border: 2px solid #fb923c; /* Borde destacado */
+}
+
+/* 3. Futuro (Rosa) */
+.status-pink {
+    background-color: #fce7f3; /* Fondo rosa claro */
+    color: #be185d;            /* Texto rosa oscuro */
+    opacity: 0.7;
+    cursor: default;
+}
+
+/* Columna Total Semanal */
+.col-total-semana {
+    background-color: #f1f5f9;
+    color: #334155;
+    font-weight: bold;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Pie de Tabla (Total Mensual) */
+.footer-mes {
+    margin-top: 15px;
+    background: #1e293b;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+}
+
+/* --- ESTILOS DEL MODAL --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); z-index: 1000;
+    display: flex; justify-content: center; align-items: center;
+}
+.modal-content {
+    background: white; padding: 25px; border-radius: 12px; width: 300px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+.modal-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+.close-modal { background: none; border: none; font-size: 24px; cursor: pointer; }
+.detail-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 15px; }
+.total-row { font-weight: bold; font-size: 18px; margin-top: 10px; }
+.money-positive { color: #166534; }
+.money-blue { color: #1e40af; }

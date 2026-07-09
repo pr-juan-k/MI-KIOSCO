@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MI KIOSKO - Empleado</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Modal Seleccion de Turno -->
+    <div id="modalTurno" class="modal">
+        <div class="modal-content modal-turno">
+            <div class="modal-header">
+                <h2>Selecciona tu Turno</h2>
+                <p id="nombreEmpleadoModal">Bienvenido</p>
+            </div>
+            <div class="turno-options">
+                <button class="btn-turno" onclick="seleccionarTurno('Mañana')">
+                    <span class="turno-icon">☀️</span>
+                    <span class="turno-text">Mañana</span>
+                    <span class="turno-horario">06:00 - 14:00</span>
+                </button>
+                <button class="btn-turno" onclick="seleccionarTurno('Tarde')">
+                    <span class="turno-icon">🌙</span>
+                    <span class="turno-text">Tarde</span>
+                    <span class="turno-horario">14:00 - 22:00</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Despachar -->
+    <div id="modalDespachar" class="modal">
+        <div class="modal-content modal-despachar">
+            <div class="modal-header-despachar">
+                <h2>Nueva Venta</h2>
+                <span id="clienteActualModal">Cliente C1</span>
+            </div>
+            
+            <div class="despachar-body">
+                <!-- Buscador de productos -->
+                <div class="buscador-despachar">
+                    <input 
+                        type="text" 
+                        id="buscadorProductoDespachar" 
+                        placeholder="Buscar por codigo, nombre o precio..."
+                        autocomplete="off"
+                    >
+                    <div id="resultadosBusquedaDespachar" class="resultados-busqueda"></div>
+                </div>
+
+                <!-- Tabla de productos agregados -->
+                <div class="tabla-productos-despachar">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Codigo</th>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productosDespacharBody">
+                            <tr class="empty-row">
+                                <td colspan="5">No hay productos agregados</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Total y metodo de pago -->
+                <div class="despachar-footer">
+                    <div class="total-despachar">
+                        <span>TOTAL:</span>
+                        <span id="totalDespachar">$0.00</span>
+                    </div>
+                    
+                    <div class="metodo-pago">
+                        <label>Metodo de Pago:</label>
+                        <div class="pago-options">
+                            <label class="pago-option">
+                                <input type="radio" name="metodoPago" value="Efectivo">
+                                <span class="pago-label">💵 Efectivo</span>
+                            </label>
+                            <label class="pago-option">
+                                <input type="radio" name="metodoPago" value="Transferencia">
+                                <span class="pago-label">📱 Transferencia</span>
+                            </label>
+                        </div>
+                        <span id="errorMetodoPago" class="error-pago"></span>
+                    </div>
+
+                    <div class="despachar-actions">
+                        <button class="btn-cancelar" onclick="cerrarModalDespachar()">Cancelar</button>
+                        <button class="btn-confirmar" onclick="confirmarVenta()">
+                            <span>✓</span> Confirmar Venta
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cerrar Caja -->
+    <div id="modalCerrarCaja" class="modal">
+        <div class="modal-content modal-cerrar-caja">
+            <div class="modal-header">
+                <h2>Cierre de Caja</h2>
+                <p id="fechaCierreCaja"></p>
+            </div>
+            <div class="cierre-resumen">
+                <div class="cierre-item">
+                    <span>Total Clientes Atendidos:</span>
+                    <span id="cierreTotalClientes">0</span>
+                </div>
+                <div class="cierre-item">
+                    <span>Total Efectivo:</span>
+                    <span id="cierreTotalEfectivo">$0.00</span>
+                </div>
+                <div class="cierre-item">
+                    <span>Total Transferencias:</span>
+                    <span id="cierreTotalTransferencia">$0.00</span>
+                </div>
+                <div class="cierre-item cierre-total">
+                    <span>TOTAL RECAUDADO:</span>
+                    <span id="cierreTotalGeneral">$0.00</span>
+                </div>
+            </div>
+            
+            <!-- Formulario de verificacion -->
+            <div class="cierre-verificacion">
+                <p class="verificacion-titulo">Ingrese sus credenciales para confirmar</p>
+                <div class="input-group-cierre">
+                    <label>Usuario:</label>
+                    <input type="text" id="cierreUsuario" placeholder="Ingrese su nombre de usuario">
+                </div>
+                <div class="input-group-cierre">
+                    <label>Contrasena:</label>
+                    <input type="password" id="cierrePassword" placeholder="Ingrese su contrasena">
+                </div>
+                <span id="errorCierre" class="error-cierre"></span>
+            </div>
+            
+            <div class="cierre-actions">
+                <button class="btn-cancelar" onclick="cerrarModalCaja()">Cancelar</button>
+                <button class="btn-confirmar" onclick="confirmarCierreCaja()">
+                    <span>✓</span> Confirmar Cierre
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="login-header">
+    <div class="logo-icon">🏪</div>
+    <h1>MI KIOSCO</h1>
+    <p>Sistema de Gestión</p>
+</div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active" data-section="inicio">
+                        <a href="#" onclick="mostrarSeccion('inicio'); return false;"><span class="nav-icon">🏠</span> Inicio</a>
+                    </li>
+                    <li data-section="ventas">
+                        <a href="#" onclick="mostrarSeccion('ventas'); return false;"><span class="nav-icon">💳</span> Ventas</a>
+                    </li>
+                    <li data-section="productos">
+                        <a href="#" onclick="mostrarSeccion('productos'); return false;"><span class="nav-icon">📦</span> Productos</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="cerrarSesion()">
+                    <span>🚪</span> Cerrar Sesion
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header con info del empleado -->
+            <header class="main-header empleado-header">
+                <div class="empleado-info">
+                    <h1 id="nombreEmpleadoHeader">Empleado</h1>
+                    <div class="empleado-detalles">
+                        <span class="badge-turno" id="badgeTurno">Turno: --</span>
+                        <span class="fecha-inicio" id="fechaInicio">Inicio: --</span>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <span class="user-avatar">👤</span>
+                    <span id="nombreUsuario">Empleado</span>
+                </div>
+            </header>
+
+            <!-- ========== SECCION INICIO ========== -->
+            <div id="seccionInicio" class="seccion-content">
+            
+            <!-- Buscador de ventas -->
+            <section class="buscador-section">
+                <div class="buscador-container">
+                    <input 
+                        type="text" 
+                        id="buscadorVentas" 
+                        placeholder="Buscar producto vendido..."
+                        autocomplete="off"
+                    >
+                    <button class="btn-buscar">🔍</button>
+                </div>
+            </section>
+
+            <!-- Tabla Principal de Ventas -->
+            <section class="ventas-section">
+                <div class="ventas-header">
+                    <h2>Ventas del Dia</h2>
+                    <button class="btn-despachar" onclick="abrirModalDespachar()">
+                        <span>🛒</span> DESPACHAR
+                    </button>
+                </div>
+
+                <div id="tablaVentas" class="ventas-container">
+                    <div class="sin-ventas">
+                        <span>📋</span>
+                        <p>No hay ventas registradas aun</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resumen de Recaudacion -->
+            <section class="resumen-section">
+                <div class="resumen-container">
+                    <h3>Resumen de Recaudacion</h3>
+                    <div class="resumen-grid">
+                        <div class="resumen-item">
+                            <span class="resumen-label">Efectivo:</span>
+                            <span class="resumen-value" id="totalEfectivo">$0.00</span>
+                        </div>
+                        <div class="resumen-item">
+                            <span class="resumen-label">Transferencia:</span>
+                            <span class="resumen-value" id="totalTransferencia">$0.00</span>
+                        </div>
+                        <div class="resumen-item resumen-total">
+                            <span class="resumen-label">TOTAL:</span>
+                            <span class="resumen-value" id="totalGeneral">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Boton Cerrar Caja -->
+            <section class="cerrar-caja-section" id="seccionCerrarCaja">
+                <button class="btn-cerrar-caja" onclick="abrirModalCerrarCaja()">
+                    <span>🔒</span> CERRAR CAJA
+                </button>
+            </section>
+            </div>
+
+            <!-- ========== SECCION VENTAS ========== -->
+            <div id="seccionVentas" class="seccion-content" style="display: none;">
+                <h2 class="seccion-titulo">Registro de Ventas por Metodo de Pago</h2>
+                
+                <div class="ventas-por-metodo">
+                    <!-- Tabla Efectivo -->
+                    <div class="tabla-metodo-pago">
+                        <div class="metodo-header efectivo-header">
+                            <span>💵</span>
+                            <h3>Pagos en Efectivo</h3>
+                        </div>
+                        <div class="tabla-scroll">
+                            <table class="tabla-ventas-metodo">
+                                <thead>
+                                    <tr>
+                                        <th>Cliente</th>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                        <th>Monto</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaEfectivoBody">
+                                    <tr class="sin-datos">
+                                        <td colspan="4">No hay ventas en efectivo</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="metodo-footer">
+                            <span>Total Efectivo:</span>
+                            <span id="totalEfectivoSeccion">$0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Tabla Transferencia -->
+                    <div class="tabla-metodo-pago">
+                        <div class="metodo-header transferencia-header">
+                            <span>📱</span>
+                            <h3>Pagos en Transferencia</h3>
+                        </div>
+                        <div class="tabla-scroll">
+                            <table class="tabla-ventas-metodo">
+                                <thead>
+                                    <tr>
+                                        <th>Cliente</th>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                        <th>Monto</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaTransferenciaBody">
+                                    <tr class="sin-datos">
+                                        <td colspan="4">No hay ventas por transferencia</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="metodo-footer">
+                            <span>Total Transferencia:</span>
+                            <span id="totalTransferenciaSeccion">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== SECCION PRODUCTOS ========== -->
+            <div id="seccionProductos" class="seccion-content" style="display: none;">
+                <h2 class="seccion-titulo">Inventario de Productos</h2>
+                
+                <!-- Buscador de productos -->
+                <div class="buscador-productos-inventario">
+                    <input 
+                        type="text" 
+                        id="buscadorInventario" 
+                        placeholder="Buscar producto por codigo, nombre o categoria..."
+                        oninput="filtrarInventario()"
+                    >
+                </div>
+
+                <!-- Leyenda de estados -->
+                <div class="leyenda-stock">
+                    <div class="leyenda-item">
+                        <span class="estado-dot stock-suficiente"></span>
+                        <span>Stock Suficiente (mayor a 40)</span>
+                    </div>
+                    <div class="leyenda-item">
+                        <span class="estado-dot stock-bajo"></span>
+                        <span>Poco Stock (10-40)</span>
+                    </div>
+                    <div class="leyenda-item">
+                        <span class="estado-dot stock-critico"></span>
+                        <span>Stock Critico (menor a 10)</span>
+                    </div>
+                    <div class="leyenda-item">
+                        <span class="estado-dot sin-stock"></span>
+                        <span>Sin Stock (0)</span>
+                    </div>
+                </div>
+
+                <!-- Tabla de inventario -->
+                <div class="tabla-inventario-container">
+                    <table class="tabla-inventario">
+                        <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Producto</th>
+                                <th>Categoria</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaInventarioBody">
+                            <!-- Se llena dinamicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/productos.js"></script>
+    <script src="js/empleado.js"></script>
+</body>
+</html>
